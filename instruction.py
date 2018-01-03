@@ -1,15 +1,18 @@
+from collections import namedtuple
+
+
 def unpack16(word):
     # TODO: byte order
     return [word & 0xff, word >> 8]
+
+Asm = namedtuple('Asm', ['label', 'address', 'data'])
 
 
 class Instruction:
 
     def __call__(self, addr):
         (length, data) = self.get_data()
-        asm = {'label': self.label,
-               'address': addr,
-               'data': data}
+        asm = Asm(self.label, addr, data)
         new_addr = addr+length
         return (asm, new_addr)
 

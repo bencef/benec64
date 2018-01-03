@@ -25,11 +25,11 @@ def asm(start_address, instructions):
 def fix(asm):
     '''List Asm -> List Word8'''
     def extract(addr):
-        inst = next(filter(lambda i: i['label'] == addr, asm))
-        return unpack16(inst['address'])
+        inst = next(filter(lambda i: i.label == addr, asm))
+        return unpack16(inst.address)
     out = []
     for a in asm:
-        for byte in a['data']:
+        for byte in a.data:
             if isinstance(byte, str):
                 out.extend(extract(byte))
             else:
