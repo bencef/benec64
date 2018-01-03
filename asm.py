@@ -8,7 +8,7 @@ from instruction import unpack16, jsr
 ###
 # { label :: Maybe String
 # , address :: Word16
-# , data :: List (Either Word8 String)
+# , data :: List (Either Word8 String) }
 
 
 def asm(start_address, instructions):
