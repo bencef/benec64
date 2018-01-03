@@ -18,7 +18,7 @@ def asm(start_address, instructions):
     for instruction in instructions:
         (new_data, new_counter) = instruction(program_counter)
         output.append(new_data)
-        program_counter += new_counter
+        program_counter = new_counter
     return fix(output)
 
 
