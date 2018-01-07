@@ -6,6 +6,7 @@ def unpack16(word):
     return [word & 0xff, word >> 8]
 
 Asm = namedtuple('Asm', ['label', 'address', 'data'])
+Variant = namedtuple('Variant', ['opcode', 'length'])
 
 
 class Instruction:
@@ -34,7 +35,6 @@ class jsr(Instruction):
 
 class lda(Instruction):
 
-    Variant = namedtuple('Variant', ['opcode', 'length'])
     INDX = Variant(0xA1, 2)
     ZPAGE = Variant(0xA5, 2)
     IMM = Variant(0xA9, 2)
@@ -63,3 +63,19 @@ class rts(Instruction):
 
     def get_data(self):
         return (1, [0x60])
+
+
+class jmp(Instruction):
+
+    ABS = Variant(0x4C, 3)
+    IND = Variant(0x6C, 3)
+
+    def __init__(self, address, label=None):
+        self.label = label
+        self.variant = self.ABS
+        self.address = address
+
+    def get_data(self):
+        result = [self.variant.opcode]
+        result.extend(unpack16(self.address))
+        return (self.variant.length, result)
