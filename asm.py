@@ -19,7 +19,9 @@ def asm(start_address, instructions):
         (new_data, new_counter) = instruction(program_counter)
         output.append(new_data)
         program_counter = new_counter
-    return fix(output)
+    result = unpack16(start_address)
+    result.extend(fix(output))
+    return result
 
 
 def fix(asm):
