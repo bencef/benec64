@@ -30,3 +30,27 @@ class jsr(Instruction):
             where = unpack16(self.jump_to)
         out.extend(where)
         return (3, out)
+
+
+class lda(Instruction):
+
+    Variant = namedtuple('Variant', ['opcode', 'length'])
+    INDX = Variant(0xA1, 2)
+    ZPAGE = Variant(0xA5, 2)
+    IMM = Variant(0xA9, 2)
+    ABS = Variant(0xAD, 3)
+    INDY = Variant(0xB1, 2)
+    ZPAGEX = Variant(0xB5, 2)
+    ABSY = Variant(0xB9, 3)
+    ABSX = Variant(0xBD, 3)
+
+    def __init__(self, value_or_address, label=None):
+        self.label = label
+        if False:
+            pass
+        else:
+            self.variant = self.IMM
+            self.value = value_or_address
+
+    def get_data(self):
+        return (self.variant.length, [self.variant.opcode, self.value])
