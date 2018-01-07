@@ -54,3 +54,12 @@ class lda(Instruction):
 
     def get_data(self):
         return (self.variant.length, [self.variant.opcode, self.value])
+
+
+class rts(Instruction):
+
+    def __init__(self, label=None):
+        self.label = label
+
+    def get_data(self):
+        return (1, [0x60])
