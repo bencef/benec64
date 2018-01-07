@@ -1,4 +1,4 @@
-from instruction import unpack16, jsr
+from instruction import unpack16
 
 # data Instruction
 ###
