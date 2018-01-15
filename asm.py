@@ -20,11 +20,11 @@ def asm(start_address, instructions):
         output.append(new_data)
         program_counter = new_counter
     result = unpack16(start_address)
-    result.extend(fix(output))
+    result.extend(link(output))
     return result
 
 
-def fix(asm):
+def link(asm):
     '''List Asm -> List Word8'''
     def extract(addr):
         inst = next(filter(lambda i: i.label == addr, asm))
