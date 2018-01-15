@@ -79,3 +79,24 @@ class jmp(Instruction):
         result = [self.variant.opcode]
         result.extend(unpack16(self.address))
         return (self.variant.length, result)
+
+
+class ldx(Instruction):
+
+    IMM = Variant(0xA2, 2)
+    ZPAGE = Variant(0xA6, 2)
+    ABS = Variant(0xAE, 3)
+    ZPAGEY = Variant(0xB6, 2)
+    ABSY = Variant(0xBE, 3)
+
+    def __init__(self, value_or_address, label=None):
+        self.label = label
+        if False:
+            pass
+        else:
+            self.variant = self.IMM
+            self.value = value_or_address
+
+    def get_data(self):
+        result = [self.variant.opcode, self.value]
+        return (self.variant.length, result)
