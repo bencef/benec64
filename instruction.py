@@ -2,8 +2,68 @@ from collections import namedtuple
 
 
 def unpack16(word):
-    # TODO: byte order
     return [word & 0xff, word >> 8]
+
+class CharLiteralError(Exception):
+    def __init__(self, char):
+        super(CharLiteralError, self).__init__('No char literal for ' + repr(char))
+
+class WrongRegisterError(Exception):
+    def __init__(self, register):
+        super(WrongRegisterError, self).__init__('No such register: ' + repr(register))
+
+lut = {' ': 0x20,
+       'A': 0x41,
+       'B': 0x42,
+       'C': 0x43,
+       'D': 0x44,
+       'E': 0x45,
+       'F': 0x46,
+       'G': 0x47,
+       'H': 0x48,
+       'I': 0x49,
+       'J': 0x4a,
+       'K': 0x4b,
+       'L': 0x4c,
+       'M': 0x4d,
+       'N': 0x4e,
+       'O': 0x4f,
+       'P': 0x50,
+       'Q': 0x51,
+       'R': 0x52,
+       'S': 0x53,
+       'T': 0x54,
+       'U': 0x55,
+       'V': 0x56,
+       'W': 0x57,
+       'X': 0x58,
+       'Y': 0x59,
+       'Z': 0x5a}
+
+def string(str):
+    result = []
+    for c in str:
+        try:
+            result.append(lut[c])
+        except KeyError as e:
+            raise CharLiteralError(c) from e
+    return result
+
+class XIndexed():
+    def __init__(self, base):
+        self.base = base
+
+class YIndexed():
+    def __init__(self, base):
+        self.base = base
+
+def index(base, register):
+    if register == 'x':
+        return XIndexed(base)
+    elif register == 'y':
+        return YIndexed(base)
+    else:
+        raise WrongRegisterError(register)
 
 Asm = namedtuple('Asm', ['label', 'address', 'data'])
 Variant = namedtuple('Variant', ['opcode', 'length'])
@@ -100,3 +160,18 @@ class ldx(Instruction):
     def get_data(self):
         result = [self.variant.opcode, self.value]
         return (self.variant.length, result)
+
+
+class inx(Instruction):
+
+    pass
+
+
+class data(Instruction):
+
+    def __init__(self, data, label=None):
+        self.label = label
+        self.data = data
+
+    def get_data(self):
+        return (len(self.data), self.data)
