@@ -181,13 +181,13 @@ class cpx(Instruction):
     ZPAGE = Variant(0xE4, 3)
     ABS = Variant(0xEC, 4)
 
-    def __init__(self, adress, label=None):
+    def __init__(self, address, label=None):
         self.label = label
         if False:
             pass
         else:
             self.variant = self.ABS
-            self.adress = adress
+            self.address = address
 
     def get_data(self):
         result = [self.variant.opcode]
