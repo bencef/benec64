@@ -164,7 +164,35 @@ class ldx(Instruction):
 
 class inx(Instruction):
 
-    pass
+    IMP = Variant(0xE8, 1)
+
+    def __init__(self, label=None):
+        self.label = label
+        self.variant = self.IMP
+
+    def get_data(self):
+        result = [self.variant.opcode]
+        return (self.variant.length, result)
+
+
+class cpx(Instruction):
+
+    IMM = Variant(0xE0, 2)
+    ZPAGE = Variant(0xE4, 3)
+    ABS = Variant(0xEC, 4)
+
+    def __init__(self, adress, label=None):
+        self.label = label
+        if False:
+            pass
+        else:
+            self.variant = self.ABS
+            self.adress = adress
+
+    def get_data(self):
+        result = [self.variant.opcode]
+        result.extend(unpack16(self.address))
+        return (self.variant.length, result)
 
 
 class data(Instruction):
