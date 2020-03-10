@@ -9,7 +9,7 @@ prg = [ldx(0x00),
        jsr(0xFFD2),
        inx(),
        cpx(msg_len),
-       bne('loop'), # WARN TODO: Is this relative?
+       bne(relative('loop')), # WARN TODO: Is this relative?
        rts(),
        data(string(msg), 'text')]
 
